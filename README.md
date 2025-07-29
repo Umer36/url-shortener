@@ -15,12 +15,12 @@ A simple and fast URL shortener built with Next.js, TypeScript, and SQLite.
 
 1. Install dependencies:
 ```bash
-yarn install
+npm install
 ```
 
 2. Run the development server:
 ```bash
-yarn dev
+npm run dev
 ```
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser.
