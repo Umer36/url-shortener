@@ -1,6 +1,10 @@
 # URL Shortener
 
-A simple and fast URL shortener built with Next.js, TypeScript, and SQLite.
+A simple and fast URL shortener built with Next.js, TypeScript, and in-memory storage.
+
+## 🚀 Live Demo
+
+**[Try it live: https://url-shortener-seven-coral.vercel.app/](https://url-shortener-seven-coral.vercel.app/)**
 
 ## Features
 
@@ -38,7 +42,7 @@ npm run dev
 - **Next.js 14** - React framework with App Router
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling
-- **JSON** - File-based storage
+- **In-Memory Storage** - For serverless deployment
 - **nanoid** - Short ID generation
 
 ## API Endpoints
@@ -48,16 +52,12 @@ npm run dev
 
 ## Data Structure
 
-```json
-{
-  "urls": [
-    {
-      "id": "unique-id",
-      "original_url": "https://example.com",
-      "short_code": "abc123",
-      "created_at": "2024-01-01T00:00:00.000Z",
-      "clicks": 0
-    }
-  ]
+```typescript
+interface UrlRecord {
+  id: string;
+  original_url: string;
+  short_code: string;
+  created_at: string;
+  clicks: number;
 }
 ```
