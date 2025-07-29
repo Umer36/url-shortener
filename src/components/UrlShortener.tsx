@@ -26,9 +26,13 @@ function UrlShortenerContent() {
       if (response.ok) {
         const data = await response.json();
         setRecentUrls(data.slice(0, 5));
+      } else {
+        console.log('No URLs found or API error');
+        setRecentUrls([]);
       }
     } catch (error) {
       console.error('Failed to fetch recent URLs:', error);
+      setRecentUrls([]);
     }
   };
 
@@ -190,7 +194,7 @@ function UrlShortenerContent() {
           </div>
         )}
 
-        {recentUrls.length > 0 && (
+        {(recentUrls.length > 0 || shortenedUrl) && (
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 border dark:border-gray-600 animate-fade-in">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
@@ -207,6 +211,33 @@ function UrlShortenerContent() {
               </button>
             </div>
             <div className="space-y-3">
+              {shortenedUrl && !recentUrls.find(url => url.short_code === shortenedUrl.short_code) && (
+                <div className="bg-white dark:bg-gray-800 p-3 rounded border dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-all duration-300 transform hover:scale-[1.02] border-green-500 dark:border-green-400">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-start gap-2">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-mono text-sm text-blue-600 dark:text-blue-400 break-all">
+                          {`${window.location.origin}/${shortenedUrl.short_code}`}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 break-all mt-1">
+                          {shortenedUrl.original_url}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <span className="text-xs text-green-600 dark:text-green-400 whitespace-nowrap flex items-center gap-1">
+                          ✨ Just created
+                        </span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap flex items-center gap-1">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                          </svg>
+                          {shortenedUrl.clicks} clicks
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
               {recentUrls.map((urlItem) => (
                 <div key={urlItem.id} className="bg-white dark:bg-gray-800 p-3 rounded border dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-all duration-300 transform hover:scale-[1.02]">
                   <div className="flex flex-col gap-2">
@@ -241,6 +272,12 @@ function UrlShortenerContent() {
                   </div>
                 </div>
               ))}
+              {recentUrls.length === 0 && !shortenedUrl && (
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <p>No URLs created yet</p>
+                  <p className="text-sm mt-1">Create your first short URL above!</p>
+                </div>
+              )}
             </div>
           </div>
         )}
